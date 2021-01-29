@@ -26,6 +26,8 @@ jobs:
       - uses: actions/checkout@v2
 #      - name: configure
 #        run: .github/workflows/./configure.sh
+      - name: make import
+        run: make import
       - name: make
         run: make
       - name: make flash
