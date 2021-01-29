@@ -24,12 +24,12 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
-#      - name: configure
-#        run: ./configure
+      - name: configure
+        run: ./configure
       - name: make
         run: make
-#      - name: make flash
-#        run: make flash
+      - name: make flash
+        run: make flash
 #  
 #  # This workflow contains a job called "supervise":
 #  supervise:
