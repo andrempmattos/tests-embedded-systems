@@ -1,52 +1,13 @@
-# Prerequisites
-*.d
+# Source files
+!lnk_msp430f6659.cmd
 
-# Object files
-*.o
-*.ko
-*.obj
-*.elf
+# Code Composer Studio output
+.launches
+.settings
+Debug/
 
-# Linker output
-*.ilk
-*.map
-*.exp
+# Vi/Vim files
+*.swp
 
-# Precompiled Headers
-*.gch
-*.pch
-
-# Libraries
-*.lib
-*.a
-*.la
-*.lo
-
-# Shared objects (inc. Windows DLLs)
-*.dll
-*.so
-*.so.*
-*.dylib
-
-# Executables
-*.exe
-*.out
-*.app
-*.i*86
-*.x86_64
-*.hex
-
-# Debug files
-*.dSYM/
-*.su
-*.idb
-*.pdb
-
-# Kernel Module Compile Results
-*.mod*
-*.cmd
-.tmp_versions/
-modules.order
-Module.symvers
-Mkfile.old
-dkms.conf
+# ctags files
+tags
