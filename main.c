@@ -35,11 +35,14 @@
 
 #include "system/clocks.h"
 #include "system/sys_log/sys_log.h"
+#include <msp430.h>
 
 #define DUMMY_NAME    "MAIN"
 
 void main(void)
 {
+    WDTCTL = WDTPW + WDTHOLD;             // Stop WDT
+    
     /* System clocks configuration */
     clocks_setup((clocks_config_t){.mclk_hz = 32000000UL, .smclk_hz=32000000UL, .aclk_hz=32768});
 
