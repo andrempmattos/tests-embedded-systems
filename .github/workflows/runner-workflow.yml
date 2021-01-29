@@ -24,33 +24,33 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
-      - name: configure
-        run: ./configure
+#      - name: configure
+#        run: ./configure
       - name: make
         run: make
-      - name: make flash
-        run: make flash
-  
-  # This workflow contains a job called "supervise":
-  supervise:
-    # The type of runner that the job will run on
-    runs-on: self-hosted
-
-    # Environment variables
-    env:
-      PORT: /dev/ttyUSB0
-      BAUNDRATE: 115200
-      LOGFILE: ../tests/test.txt
-    
-    # Steps represent a sequence of tasks that will be executed as part of the job
-    steps:
-    - uses: actions/checkout@v2
-    - name: Set up Python 3.x
-      uses: actions/setup-python@v2
-      with:
-        # Semantic version range syntax or exact version of a Python version
-        python-version: '3.x'
-    - name: Check connected devices
-      run: ./check-devices.sh
-    - name: Run python monitoring script
-      run: ./uart-terminal.py $PORT $BAUNDRATE $LOGFILE
+#      - name: make flash
+#        run: make flash
+#  
+#  # This workflow contains a job called "supervise":
+#  supervise:
+#    # The type of runner that the job will run on
+#    runs-on: self-hosted
+#
+#    # Environment variables
+#    env:
+#      PORT: /dev/ttyUSB0
+#      BAUNDRATE: 115200
+#      LOGFILE: ../tests/test.txt
+#    
+#    # Steps represent a sequence of tasks that will be executed as part of the job
+#    steps:
+#    - uses: actions/checkout@v2
+#    - name: Set up Python 3.x
+#      uses: actions/setup-python@v2
+#      with:
+#        # Semantic version range syntax or exact version of a Python version
+#        python-version: '3.x'
+#    - name: Check connected devices
+#      run: ./check-devices.sh
+#    - name: Run python monitoring script
+#      run: ./uart-terminal.py $PORT $BAUNDRATE $LOGFILE
