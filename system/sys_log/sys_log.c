@@ -125,8 +125,6 @@ void sys_log_print_event(uint8_t type, const char *event)
 
     switch(type)
     {
-        case SYS_LOG_TEST:
-            break;
         case SYS_LOG_INFO:
             break;
         case SYS_LOG_WARNING:
@@ -134,6 +132,9 @@ void sys_log_print_event(uint8_t type, const char *event)
             break;
         case SYS_LOG_ERROR:
             sys_log_set_color(SYS_LOG_ERROR_COLOR);
+            break;
+        case SYS_LOG_TEST:
+            sys_log_set_color(SYS_LOG_TEST_COLOR);
             break;
         default:
             break;
