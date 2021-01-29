@@ -124,23 +124,6 @@ void system_increment_time(void);
  */
 sys_time_t system_get_time(void);
 
-/**
- * \brief Gets the current hardware version.
- *
- * This funciton reads the state of the versioning GPIO pins.
- *
- * \return The current hardware version. It can be:
- * \parblock
- *      -\b HW_VERSION_0
- *      -\b HW_VERSION_1
- *      -\b HW_VERSION_2
- *      -\b HW_VERSION_3
- *      -\b HW_VERSION_UNKNOWN
- *      .
- * \endparblock
- */
-sys_hw_version_t system_get_hw_version();
-
 #endif /* SYSTEM_H_ */
 
 /** \} End of system group */

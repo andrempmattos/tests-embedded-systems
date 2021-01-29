@@ -36,7 +36,6 @@
 #include <hal/usci_a_uart.h>
 #include <hal/gpio.h>
 
-#include <config/config.h>
 #include <system/sys_log/sys_log.h>
 
 #include "uart.h"
