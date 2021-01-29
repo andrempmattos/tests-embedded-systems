@@ -42,7 +42,7 @@ jobs:
     env:
       PORT: /dev/ttyUSB0
       BAUNDRATE: 115200
-      LOGFILE: ../tests/test.txt
+      #LOGFILE: ../tests/test.txt
     
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:

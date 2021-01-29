@@ -9,6 +9,8 @@ It is a simple serial terminal written in Python.
 **Obs:** 
 - *Tested with Python 3.7.3 using Windows 10 [Build 18362]*
 
+> To solve permission access to the USB port: sudo usermod -a -G dialout $USER
+
 ## Python required libraries
 
 - sys
@@ -49,3 +51,4 @@ Example:
 ```
 py.exe .\uart-terminal.py COM1 115200 log_2020-02-17.txt
 ```
+
