@@ -1,14 +1,14 @@
 # This is a basic workflow to help you get started with Actions
 
-name: C/C++ CI
+name: CI/HIL experiment
 
 # Controls when the action will run. 
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+#  push:
+#    branches: [ main ]
+#  pull_request:
+#    branches: [ main ]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -16,7 +16,7 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs: 
   # This workflow contains a job called "build":
-  build:
+  build-deploy:
     # The type of runner that the job will run on
     runs-on: self-hosted
     
@@ -28,13 +28,19 @@ jobs:
         run: ./configure
       - name: make
         run: make
-      - name: make check
-        run: make check
+      - name: make flash
+        run: make flash
   
   # This workflow contains a job called "supervise":
   supervise:
     # The type of runner that the job will run on
     runs-on: self-hosted
+
+    # Environment variables
+    env:
+      PORT: /dev/ttyUSB0
+      BAUNDRATE: 115200
+      LOGFILE: ../tests/test.txt
     
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -44,6 +50,7 @@ jobs:
       with:
         # Semantic version range syntax or exact version of a Python version
         python-version: '3.x'
-    # You can test your matrix by printing the current Python version
-    - name: Display Python version
-      run: ./uart-terminal.py [port] [baud] *[logfile]
+    - name: Check connected devices
+      run: ./check-devices.sh
+    - name: Run python monitoring script
+      run: ./uart-terminal.py $PORT $BAUNDRATE $LOGFILE
