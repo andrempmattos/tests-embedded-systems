@@ -14,9 +14,9 @@ It is a simple serial terminal written in Python.
 ## Python required libraries
 
 - sys
-- _thread
 - datetime
 - pyserial
+- re
 
 ## Usage
 
