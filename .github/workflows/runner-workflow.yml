@@ -16,7 +16,8 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs: 
   # This workflow contains a job called "build":
-  build-deploy:
+  build:
+    name: build
     # The type of runner that the job will run on
     runs-on: self-hosted
     
@@ -30,12 +31,17 @@ jobs:
         run: make import
       - name: make
         run: make
+
+  flash:
+    name: flash
+    needs: build
+    runs-on: self-hosted
+    steps:
       - name: make flash
         run: make flash
-  
-  # This workflow contains a job called "supervise":
-  supervise:
-    # The type of runner that the job will run on
+
+  test:
+    name: test
     runs-on: self-hosted
 
     # Environment variables
@@ -44,9 +50,7 @@ jobs:
       BAUNDRATE: 115200
       #LOGFILE: ../tests/test.txt
     
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-    - uses: actions/checkout@v2
     #- name: Set up Python 3.x
     #  uses: actions/setup-python@v2
     #  with:
@@ -54,5 +58,9 @@ jobs:
     #    python-version: '3.x'
     - name: Check connected devices
       run: .github/workflows/./check-devices.sh
+    - name: Sleep for 30 seconds
+      uses: jakejarvis/wait-action@master
+      with:
+        time: '10s'
     - name: Run python monitoring script
       run: .github/workflows/./uart-terminal.py $PORT $BAUNDRATE $LOGFILE
