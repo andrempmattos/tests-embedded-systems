@@ -34,6 +34,7 @@
  */
 
 #include "system/clocks.h"
+#include "hal/gpio.h"
 #include "system/sys_log/sys_log.h"
 #include <msp430.h>
 
@@ -43,12 +44,14 @@ void main(void)
 {
     WDTCTL = WDTPW + WDTHOLD;             // Stop WDT
     
-    /* System clocks configuration */
+    /* System clocks and gpio configuration */
     clocks_setup((clocks_config_t){.mclk_hz = 32000000UL, .smclk_hz=32000000UL, .aclk_hz=32768});
+    GPIO_setAsOutputPin(GPIO_PORT_P5, GPIO_PIN3);
 
     /* WARNING: This initial delay is required to properly complete de github actions workflow */
     int i;
     for(i = 0; i < 20; i++) {
+        GPIO_toggleOutputOnPin(GPIO_PORT_P5, GPIO_PIN3);
         __delay_cycles(32000000UL);     // Delay 1 second
     }
 
