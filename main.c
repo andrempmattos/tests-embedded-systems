@@ -46,6 +46,12 @@ void main(void)
     /* System clocks configuration */
     clocks_setup((clocks_config_t){.mclk_hz = 32000000UL, .smclk_hz=32000000UL, .aclk_hz=32768});
 
+    /* WARNING: This initial delay is required to properly complete de github actions workflow */
+    int i;
+    for(i = 0; i < 20; i++) {
+        __delay_cycles(32000000UL);     // Delay 1 second
+    }
+
     /* Logger device initialization */
     sys_log_init();
 
@@ -60,7 +66,10 @@ void main(void)
     sys_log_print_msg(" Hz");
     sys_log_new_line();
 
+    /* Log syntax for the automated verification through the UART port */
     sys_log_print_event_from_module(SYS_LOG_TEST, DUMMY_NAME, "Automated test passed!");
+    //sys_log_print_event_from_module(SYS_LOG_TEST, DUMMY_NAME, "Automated test failed!");
+    
     sys_log_new_line();
 
     /* Will only get here if there was insufficient memory to create the idle and/or timer task */

@@ -42,6 +42,7 @@ jobs:
 
   test:
     name: test
+    needs: flash
     runs-on: self-hosted
 
     # Environment variables
@@ -58,9 +59,5 @@ jobs:
     #    python-version: '3.x'
     - name: Check connected devices
       run: .github/workflows/./check-devices.sh
-    - name: Sleep for 30 seconds
-      uses: jakejarvis/wait-action@master
-      with:
-        time: '10s'
     - name: Run python monitoring script
       run: .github/workflows/./uart-terminal.py $PORT $BAUNDRATE $LOGFILE
