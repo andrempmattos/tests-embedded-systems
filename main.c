@@ -60,7 +60,7 @@ void main(void)
 
     /* Print the system clocks */
     clocks_config_t clks = clocks_read();
-    sys_log_print_event_from_module(SYS_LOG_TEST, DUMMY_NAME, "System clocks: MCLK=");
+    sys_log_print_event_from_module(SYS_LOG_INFO, DUMMY_NAME, "System clocks: MCLK=");
     sys_log_print_uint(clks.mclk_hz);
     sys_log_print_msg(" Hz, SMCLK=");
     sys_log_print_uint(clks.smclk_hz);
