@@ -164,6 +164,9 @@ void sys_log_print_event_from_module(uint8_t type, const char *module, const cha
         case SYS_LOG_ERROR:
             sys_log_set_color(SYS_LOG_ERROR_COLOR);
             break;
+        case SYS_LOG_TEST:
+            sys_log_set_color(SYS_LOG_TEST_COLOR);
+            break;
         default:
             break;
     }
