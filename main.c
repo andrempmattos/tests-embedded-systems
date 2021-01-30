@@ -60,6 +60,9 @@ void main(void)
     sys_log_print_msg(" Hz");
     sys_log_new_line();
 
+    sys_log_print_event_from_module(SYS_LOG_TEST, DUMMY_NAME, "Automated test passed!");
+    sys_log_new_line();
+
     /* Will only get here if there was insufficient memory to create the idle and/or timer task */
     while(1);
 }
