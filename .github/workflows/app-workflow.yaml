@@ -1,0 +1,85 @@
+#name: build
+#on: push
+#jobs:
+#  job1:
+#    runs-on: ubuntu-latest
+#    outputs:
+#      matrix: ${{ steps.set-matrix.outputs.matrix }}
+#    steps:
+#    - id: set-matrix
+#      run: echo "::set-output name=matrix::{\"include\":[{\"project\":\"foo\",\"config\":\"Debug\"},{\"project\":\"bar\",\"config\":\"Release\"}]}"
+#  job2:
+#    needs: job1
+#    runs-on: ubuntu-latest
+#    strategy:
+#      matrix: ${{fromJson(needs.job1.outputs.matrix)}}
+#    steps:
+#    - run: build
+#
+#
+#
+# original= echo "::set-output name=matrix::$( echo "$JSON" )"
+#
+# modified= echo "::set-output name=matrix::$( echo "$(cat tests.json)" | tr -d '[:space:]' | sed 's/"/\\"/g' )"
+#
+#
+#
+#steps:
+#  - name: Set the value
+#    id: step_one
+#    run: |
+#        echo "action_state=yellow" >> $GITHUB_ENV
+#  - name: Use the value
+#    id: step_two
+#    run: |
+#        echo "${{ env.action_state }}" # This will output 'yellow'
+#
+#./script >> $GITHUB_ENV
+
+
+
+
+name: Drivers workflow
+
+on:
+  workflow_dispatch:
+
+jobs: 
+  env:
+    PORT: /dev/ttyUSB0
+    BAUNDRATE: 115200
+    #LOGFILE: ../tests/test.txt
+    TESTPATH: ${{ matrix.src_file_name }}
+
+  generate-matrix:
+    name: matrix
+    runs-on: self-hosted
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+    - id: set-matrix
+      run: echo "::set-output name=matrix::$( echo "$(cat tests.json)" | tr -d '[:space:]' | sed 's/"/\\"/g' )"
+
+  build-flash-test:
+    name: build-flash-test
+    needs: generate-matrix
+    runs-on: self-hosted
+    
+    strategy:
+      fail-fast: false
+      matrix: ${{fromJson(needs.generate-matrix.outputs.matrix)}}
+    
+    steps:
+      - uses: actions/checkout@v2
+      #- name: make import
+      #  run: make import
+      #- name: make
+      #  run: make
+      #- name: make flash
+      #  run: make flash
+      #- name: Check connected devices
+      #  run: .github/workflows/./check-devices.sh
+      #- name: Run python monitoring script
+      #  run: .github/workflows/./uart-terminal.py $PORT $BAUNDRATE $LOGFILE
+      - name: Print TESTPATH
+        run: echo $TESTPATH

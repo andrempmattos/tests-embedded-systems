@@ -1,0 +1,19 @@
+{
+  "include": [
+    {
+      "name": "Unit test: dummy test 1",
+      "type": "driver",
+      "file": "main_dummy_1.c"
+    },
+    {
+      "name": "Unit test: dummy test 2",
+      "type": "driver",
+      "file": "main_dummy_2.c"
+    },
+    {
+      "name": "Unit test: dummy test 3",
+      "type": "driver",
+      "file": "main_dummy_3.c"
+    }
+  ]
+}
