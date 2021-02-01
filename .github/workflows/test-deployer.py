@@ -20,9 +20,8 @@ if len(sys.argv) <= 2:
 
 else:
 	if sys.argv[1] == "--generate":
-		#try:
 		# Get the directory path and list from input argument
-		path = "../../tests/" + sys.argv[2] + "/"
+		path = "/tests/" + sys.argv[2] + "/"
 		dir_list = os.listdir(path)
 		print(len(dir_list), "test files detected in " + sys.argv[2] + " folder")
 		
@@ -50,7 +49,7 @@ else:
 
 	elif sys.argv[1] == "--replace":
 
-		main_path = "../../main.c" 
+		main_path = "main.c" 
 		test_path = sys.argv[2]
 
 		# open both files 
