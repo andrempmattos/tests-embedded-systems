@@ -44,13 +44,7 @@ name: Drivers workflow
 on:
   workflow_dispatch:
 
-jobs: 
-  env:
-    PORT: /dev/ttyUSB0
-    BAUNDRATE: 115200
-    #LOGFILE: ../tests/test.txt
-    TESTPATH: ${{ matrix.src_file_name }}
-
+jobs:
   generate-matrix:
     name: matrix
     runs-on: self-hosted
@@ -68,6 +62,13 @@ jobs:
     strategy:
       fail-fast: false
       matrix: ${{fromJson(needs.generate-matrix.outputs.matrix)}}
+      max-parallel: 1
+     
+    env:
+      PORT: /dev/ttyUSB0
+      BAUNDRATE: 115200
+      #LOGFILE: ../tests/test.txt
+      TESTPATH: ${{ matrix.src_file_name }}
     
     steps:
       - uses: actions/checkout@v2
