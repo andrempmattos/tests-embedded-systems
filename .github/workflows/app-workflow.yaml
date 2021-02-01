@@ -73,7 +73,7 @@ jobs:
       #LOGFILE: ../tests/test.txt
       TEST_NAME: ${{ matrix.name }}
       TEST_TYPE: ${{ matrix.type }}
-      TEST_SRC: ${{ matrix.file }}
+      TEST_PATH: ${{ matrix.path }}
 
     steps:
       #####- uses: actions/checkout@v2
@@ -87,5 +87,5 @@ jobs:
       #  run: .github/workflows/./check-devices.sh
       #- name: Run python monitoring script
       #  run: .github/workflows/./uart-terminal.py $PORT $BAUNDRATE $LOGFILE
-      - name: Print TESTPATH
-        run: echo $TEST_NAME $TEST_TYPE $TEST_SRC
+      - name: Print env variables
+        run: echo $TEST_NAME $TEST_TYPE $TEST_PATH
