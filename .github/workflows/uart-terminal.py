@@ -23,7 +23,7 @@ else:
     print('\n')
     print('* optional')
     print('\n')
-    sys.exit()
+    sys.exit(1)
 
 
 ## Checking the result of the test
