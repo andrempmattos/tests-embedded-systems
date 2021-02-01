@@ -57,7 +57,7 @@ jobs:
     - name: Print without spaces
       run: echo "$(cat .github/workflows/test-list.json)" | tr -d '[:space:]' | sed 's/"/\\"/g' 
     - id: set-matrix
-      run: echo "::set-output name=matrix::$( echo "$(cat .github/workflows/test-list.json)" | tr -d '[:space:]' | sed 's/"/\\"/g' )"
+      run: echo "::set-output name=matrix::$( echo "$(cat .github/workflows/test-list.json)" | sed ':a;N;$!ba;s/\n/%0A/g' )"
 
   build-flash-test:
     name: build-flash-test
