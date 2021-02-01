@@ -40,8 +40,9 @@ else:
 		target_json = json.dumps(dummy_dict)
 		
 		# Write into file
-		with open("test-list.json","w") as json_file: 
+		with open("./.github/workflows/test-list.json","w") as json_file: 
 			json_file.write(target_json)
+		json_file.close()
 
 		print("JSON file created successfully for " + sys.argv[2] + " folder")
 		sys.exit(0)
