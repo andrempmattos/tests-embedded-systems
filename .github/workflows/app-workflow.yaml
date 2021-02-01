@@ -53,8 +53,9 @@ jobs:
     steps:
     - id: set-matrix
       run: |
-        echo "::set-output name=matrix::$( echo "$(cat tests.json)" | tr -d '[:space:]' | sed 's/"/\\"/g' )"
-        echo echo "$(cat tests.json)" | tr -d '[:space:]' | sed 's/"/\\"/g'
+        echo "$(cat test-list.json)"
+        echo "$(cat test-list.json)" | tr -d '[:space:]' | sed 's/"/\\"/g'
+        echo "::set-output name=matrix::$( echo "$(cat test-list.json)" | tr -d '[:space:]' | sed 's/"/\\"/g' )"
 
   build-flash-test:
     name: build-flash-test
