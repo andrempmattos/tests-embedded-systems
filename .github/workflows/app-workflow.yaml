@@ -53,11 +53,11 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Print original  
-      run: echo "$(cat test-list.json)"
+      run: echo "$(cat .github/workflows/test-list.json)"
     - name: Print without spaces
-      run: echo "$(cat test-list.json)" | tr -d '[:space:]' | sed 's/"/\\"/g' 
+      run: echo "$(cat .github/workflows/test-list.json)" | tr -d '[:space:]' | sed 's/"/\\"/g' 
     - id: set-matrix
-      run: echo "::set-output name=matrix::$( echo "$(cat test-list.json)" | tr -d '[:space:]' | sed 's/"/\\"/g' )"
+      run: echo "::set-output name=matrix::$( echo "$(cat .github/workflows/test-list.json)" | tr -d '[:space:]' | sed 's/"/\\"/g' )"
 
   build-flash-test:
     name: build-flash-test
