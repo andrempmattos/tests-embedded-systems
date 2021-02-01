@@ -52,7 +52,9 @@ jobs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
     - id: set-matrix
-      run: echo "::set-output name=matrix::$( echo "$(cat tests.json)" | tr -d '[:space:]' | sed 's/"/\\"/g' )"
+      run: |
+        echo "::set-output name=matrix::$( echo "$(cat tests.json)" | tr -d '[:space:]' | sed 's/"/\\"/g' )"
+        echo echo "$(cat tests.json)" | tr -d '[:space:]' | sed 's/"/\\"/g'
 
   build-flash-test:
     name: build-flash-test
