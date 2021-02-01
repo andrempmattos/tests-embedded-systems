@@ -52,10 +52,8 @@ jobs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
     - uses: actions/checkout@v2
-    - name: Print original  
+    - name: Matrix source JSON file
       run: echo "$(cat .github/workflows/test-list.json)"
-    - name: Print without spaces
-      run: echo "$(cat .github/workflows/test-list.json)" | tr -d '[:space:]' | sed 's/"/\\"/g' 
     - id: set-matrix
       run: echo "::set-output name=matrix::$( echo "$(cat .github/workflows/test-list.json)" | sed ':a;N;$!ba;s/\n/%0A/g' )"
 
@@ -73,8 +71,10 @@ jobs:
       PORT: /dev/ttyUSB0
       BAUNDRATE: 115200
       #LOGFILE: ../tests/test.txt
-      TESTPATH: ${{ matrix.src_file_name }}
-    
+      TEST_NAME: ${{ matrix.name }}
+      TEST_TYPE: ${{ matrix.type }}
+      TEST_SRC: ${{ matrix.file }}
+
     steps:
       #####- uses: actions/checkout@v2
       #- name: make import
@@ -88,4 +88,4 @@ jobs:
       #- name: Run python monitoring script
       #  run: .github/workflows/./uart-terminal.py $PORT $BAUNDRATE $LOGFILE
       - name: Print TESTPATH
-        run: echo $TESTPATH
+        run: echo $TEST_NAME $TEST_TYPE $TEST_SRC
