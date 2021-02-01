@@ -52,7 +52,9 @@ jobs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
     - uses: actions/checkout@v2
-    - name: Matrix source JSON file
+    - name: Generating JSON file
+      run: .github/workflows/./test-deployer.py --generate app
+    - name: Resulting JSON file for matrix generation
       run: echo "$(cat .github/workflows/test-list.json)"
     - id: set-matrix
       run: echo "::set-output name=matrix::$( echo "$(cat .github/workflows/test-list.json)" | sed ':a;N;$!ba;s/\n/%0A/g' )"
@@ -76,7 +78,11 @@ jobs:
       TEST_PATH: ${{ matrix.path }}
 
     steps:
-      #####- uses: actions/checkout@v2
+      ##- uses: actions/checkout@v2
+      - name: Replacing the main.c file
+        run: echo "Executing test for $TEST_TYPE - $TEST_NAME"
+      - name: Replacing the main.c file
+        run: .github/workflows/./test-deployer.py --replace $TEST_PATH
       #- name: make import
       #  run: make import
       #- name: make
