@@ -38,8 +38,8 @@
  * The CI workflow python script reads and removes this #define when replacing 
  * the main.c file. This scheme avoid compilation errors by disabling this main().
  */
-#define _MAIN_DUMMY_1_C_ 
-#ifndef _MAIN_DUMMY_1_C_
+#define _MAIN_DUMMY_HARDWARE_1_C_ 
+#ifndef _MAIN_DUMMY_HARDWARE_1_C_
 
 #include "system/clocks.h"
 #include "hal/gpio.h"
@@ -77,7 +77,7 @@ void main(void)
     sys_log_print_msg(" Hz");
     sys_log_new_line();
 
-    sys_log_print_event_from_module(SYS_LOG_INFO, DUMMY_NAME, "Unit test app dummy 1");
+    sys_log_print_event_from_module(SYS_LOG_INFO, DUMMY_NAME, "Unit test hardware dummy 1");
 
     /* Log syntax for the automated verification through the UART port */
     sys_log_print_event_from_module(SYS_LOG_TEST, DUMMY_NAME, "Automated test passed!");
@@ -89,6 +89,6 @@ void main(void)
     while(1);
 }
 
-#endif /* _MAIN_DUMMY_1_C_ */
+#endif /* _MAIN_DUMMY_HARDWARE_1_C_ */
 
 /** \} End of main group */

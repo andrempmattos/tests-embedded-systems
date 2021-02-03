@@ -33,6 +33,14 @@
  * \{
  */
 
+/* 
+ * Keep the compiler directives in THIS order to allow proper compilation.
+ * The CI workflow python script reads and removes this #define when replacing 
+ * the main.c file. This scheme avoid compilation errors by disabling this main().
+ */
+#define _MAIN_DUMMY_DEVICES_1_C_ 
+#ifndef _MAIN_DUMMY_DEVICES_1_C_
+
 #include "system/clocks.h"
 #include "hal/gpio.h"
 #include "system/sys_log/sys_log.h"
@@ -69,6 +77,8 @@ void main(void)
     sys_log_print_msg(" Hz");
     sys_log_new_line();
 
+    sys_log_print_event_from_module(SYS_LOG_INFO, DUMMY_NAME, "Unit test devices dummy 1");
+
     /* Log syntax for the automated verification through the UART port */
     sys_log_print_event_from_module(SYS_LOG_TEST, DUMMY_NAME, "Automated test passed!");
     //sys_log_print_event_from_module(SYS_LOG_TEST, DUMMY_NAME, "Automated test failed!");
@@ -77,8 +87,8 @@ void main(void)
 
     /* Will only get here if there was insufficient memory to create the idle and/or timer task */
     while(1);
-
-    //Test file 1
 }
+
+#endif /* _MAIN_DUMMY_DEVICES_1_C_ */
 
 /** \} End of main group */
