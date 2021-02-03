@@ -15,7 +15,7 @@ import:
 	$(CC) -noSplash -data $(CCS_WORKSPACE) -application com.ti.ccstudio.apps.projectImport -ccs.overwrite -ccs.location .
 
 flash:
-	$(FL) flash -c $(DEV_CONFIG_FILE) -s VerifyAfterProgramLoad=2 -e -f -v "$(IMG)" -n 0 -r 1 -u
+	$(FL) flash -c $(DEV_CONFIG_FILE) -s VerifyAfterProgramLoad=2 -e -f -v "$(IMG)" -n 0 -u
 
 clean:
 	$(CC) -noSplash -data $(CCS_WORKSPACE) -application com.ti.ccstudio.apps.projectBuild -ccs.projects $(TARGET) -ccs.clean
