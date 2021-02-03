@@ -1,0 +1,80 @@
+# This is a workflow to build, flash and test the firmware application layer.
+name: Application workflow
+
+# Controls when the action will run. 
+on:
+  # Allows running this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# Jobs scheme for running multiple executions (matrix from JSON)
+# https://stackoverflow.com/questions/59977364/github-actions-how-use-strategy-matrix-with-script
+jobs:
+  # Job for creating the matrix that will be executed in next job (the next job 'needs' this one)
+  generate-matrix:
+    name: matrix
+    # The type of runner that the job will run on (in this case the laboratory computer)
+    runs-on: self-hosted
+    # Outputs the matrix data to allow the next job read it
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+      # Calls the test-deployer script for generating the JSON file from the tests folder
+      - name: Generating JSON file
+        run: .github/workflows/./test-deployer.py --generate app
+      # Echo the result JSON
+      - name: Resulting JSON file for matrix generation
+        run: echo "$(cat .github/workflows/test-list.json)"
+      # Set the matrix output from the JSON (manipulated to remove spaces and replace \n -> %0A, " -> \")
+      - id: set-matrix
+        name: Set matrix output from the JSON file
+        run: echo "::set-output name=matrix::$( echo "$(cat .github/workflows/test-list.json)" | sed ':a;N;$!ba;s/\n/%0A/g' )"
+
+  # Job for executing all test cycle for each test file found by the script (thus, to the JSON file)
+  build-flash-test:
+    name: build-flash-test
+    # This job only starts when the generate-matrix finishes
+    needs: generate-matrix
+    runs-on: self-hosted
+    
+    # Sets this job workflow scheme (execution sequence)
+    strategy:
+      # When errors are found in this job execution, it keeps running instead of stopping (report and continue)
+      fail-fast: false
+      # Gets the output matrix from the previous work and use as the execution scheme here
+      matrix: ${{fromJson(needs.generate-matrix.outputs.matrix)}}
+      # Only allows in maximum 1 test in paralallel (force sequentiality since there is only one target hardware in the runner) 
+      max-parallel: 1
+     
+    # Sets environment variables to run scripts and print status
+    env:
+      PORT: /dev/ttyUSB0
+      BAUNDRATE: 115200
+      #LOGFILE: ../tests/test.txt
+      TEST_NAME: ${{ matrix.name }}
+      TEST_TYPE: ${{ matrix.type }}
+      TEST_PATH: ${{ matrix.path }}
+
+    steps:
+      # Echo initial status info
+      - name: Replacing the main.c file
+        run: echo "Executing unit tests for '$TEST_TYPE' - '$TEST_NAME'"
+      # Calls the test-deployer script for replacing the main.c file with the tests files folder
+      - name: Replacing the main.c file
+        run: .github/workflows/./test-deployer.py --replace $TEST_PATH
+      # Calls the makefile for importing the project into the CCS workspace
+      - name: make import
+        run: make import
+      # Calls the makefile for compiling and building the project using the CCS
+      - name: make
+        run: make
+      # Calls the makefile for flashing the program into the board using the uniflash
+      - name: make flash
+        run: make flash
+      # Calls the check-devices to echo the USB devices physically connected to the 'runner computer'
+      - name: Check connected devices
+        run: .github/workflows/./check-devices.sh
+      # Calls the uart-terminal script to start monitoring the UART port and report the success/fail criterium
+      - name: Run python monitoring script
+        run: .github/workflows/./uart-terminal.py $PORT $BAUNDRATE $LOGFILE
