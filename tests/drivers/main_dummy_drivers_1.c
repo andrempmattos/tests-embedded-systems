@@ -78,6 +78,7 @@ void main(void)
     sys_log_new_line();
 
     sys_log_print_event_from_module(SYS_LOG_INFO, DUMMY_NAME, "Unit test drivers dummy 1");
+    sys_log_new_line();
 
     /* Log syntax for the automated verification through the UART port */
     sys_log_print_event_from_module(SYS_LOG_TEST, DUMMY_NAME, "Automated test passed!");
