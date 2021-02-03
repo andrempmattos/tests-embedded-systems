@@ -140,6 +140,7 @@ It is a simple test deployer written in Python, which generate JSON files from a
 - sys
 - os
 - json
+- re
 ```
 
 **Usage**

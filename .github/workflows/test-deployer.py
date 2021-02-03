@@ -3,6 +3,7 @@
 import sys
 import os
 import json
+import re
 
 # ./test-deployer [flag] [parameter]
 #
@@ -57,6 +58,11 @@ else:
 		with open(test_path,"r") as src_file, open(main_path,"w") as dst_file: 
 			# read content from first file 
 			for line in src_file: 
+				# Search for the "#define _MAIN_" directive
+				directive_flag = re.search("#define _MAIN_", line)				
+				# If the directive was found, then skip this iteration to not copy this line.
+				if directive_flag is not None:
+					continue
 				# write content to second file 
 				dst_file.write(line)
 			print("Main file replaced by the test file successfully")
