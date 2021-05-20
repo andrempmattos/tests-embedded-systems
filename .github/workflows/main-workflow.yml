@@ -23,6 +23,9 @@ jobs:
       - uses: actions/checkout@v2
       - name: Import project into CCS
         run: make import
+      # Calls the makefile for compiling and building the project using the CCS
+      - name: make
+        run: make
       - name: Flashes the program into the board using Uniflash
         run: make flash
       # Calls the check-devices to echo the USB devices physically connected to the 'runner computer'
