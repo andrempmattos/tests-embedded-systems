@@ -2,7 +2,7 @@
 
 import sys
 import serial
-from datetime import datetime, time
+from time import sleep
 import re
 
 
@@ -46,21 +46,21 @@ def keyboardInterruptHandler(handler_check):
     if handler_check == 0:
         print('Test finished with success!')
         print('Waiting for %d seconds', timeout)
-        time.sleep(timeout)
+        sleep(timeout)
         print('[#] Port ' + device + ' closed.')
         ser.close()
         sys.exit(0)
     elif handler_check == 1:
         print('Test finished with erros!')
         print('Waiting for %d seconds', timeout)
-        time.sleep(timeout)
+        sleep(timeout)
         print('[#] Port ' + device + ' closed.')
         ser.close()
         sys.exit(1)
     else:
         print('Test aborted!')
         print('Waiting for %d seconds', timeout)
-        time.sleep(timeout)
+        sleep(timeout)
         print('[#] Port ' + device + ' closed.')
         ser.close()
         sys.exit(1)
