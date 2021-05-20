@@ -10,7 +10,7 @@ import re
 if 2 < len(sys.argv) < 6:
     device = sys.argv[1]
     baudrate = sys.argv[2]
-    timeout = sys.argv[3]
+    timeout = int(sys.argv[3])
     if len(sys.argv) == 5:
         logfile = sys.argv[4]
         logflag = 1
