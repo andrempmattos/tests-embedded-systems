@@ -31,7 +31,7 @@ else:
 #     logging.basicConfig(filename=logfile, encoding='utf-8',
 #                         level=logging.INFO)
 
-logging.basicConfig(encoding='utf-8', level=logging.INFO)
+logging.basicConfig(level=logging.INFO)
 
 
 # Creating read process fuction
