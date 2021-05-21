@@ -2,11 +2,12 @@
 
 import sys
 import serial
+from datetime import datetime
 from time import sleep
-import re
+import logging
+from multiprocessing import Process  # Used to define a timeout
 
-
-## Check system arguments
+# Check system arguments
 if 2 < len(sys.argv) < 6:
     device = sys.argv[1]
     baudrate = sys.argv[2]
@@ -26,76 +27,28 @@ else:
     print('\n')
     sys.exit(1)
 
+if logflag:
+    logging.basicConfig(filename=logfile, encoding='utf-8',
+                        level=logging.INFO)
 
-## Checking the result of the test
-def test_result_check(output):
-    test_flag = re.search("\033\[1\;34m", output)
-    if test_flag is not None:
-        test_flag_index = test_flag.span()
-        test_message_start = test_flag_index[1]
-
-        if re.search("Automated test passed!", output[test_message_start:]) is not None:
-            return 0
-        else:
-            return 1
-    else:
-        return 2
-
-## Creating Keyboard Interrupt Handler function
-def keyboardInterruptHandler(handler_check):
-    if handler_check == 0:
-        print('Test finished with success!')
-        print('Waiting for %d seconds', timeout)
-        sleep(timeout)
-        print('[#] Port ' + device + ' closed.')
-        ser.close()
-        sys.exit(0)
-    elif handler_check == 1:
-        print('Test finished with erros!')
-        print('Waiting for %d seconds', timeout)
-        sleep(timeout)
-        print('[#] Port ' + device + ' closed.')
-        ser.close()
-        sys.exit(1)
-    else:
-        print('Test aborted!')
-        print('Waiting for %d seconds', timeout)
-        sleep(timeout)
-        print('[#] Port ' + device + ' closed.')
-        ser.close()
-        sys.exit(1)
+logging.basicConfig(encoding='utf-8', level=logging.INFO)
 
 
-## Creating read process fuction
+# Creating read process fuction
 def read():
-    handler_check = 3
-    try:
-        while True:
-            data = ser.readline()
-            if data != b'' and data[0] == 0x0d:
-                output = str(datetime.now()) + ">    " + data[1:].decode('utf-8') ## Remove the Carriage Return character
-                if logflag:
-                    f.write(output)
-                    f.flush()
-                print(output, end = '')
-                handler_check = test_result_check(output)
-                if handler_check != 2:  ## Check if it is a regular case or the end of the test
-                    ser.close()         ## Just to activate the exception
+    while True:
+        data = ser.readline()
+        if data != b'' and data[0] == 0x0d:
+            # Remove the Carriage Return character
+            output = str(datetime.now()) + ">    " + data[1:].decode('utf-8')
+            logging.info(output)
 
-            elif data != b'':
-                output = str(datetime.now()) + ">    " + data.decode('utf-8')
-                if logflag:
-                    f.write(output)
-                    f.flush()
-                print(output, end = '')
-                handler_check = test_result_check(output)
-                if handler_check != 2:  ## Check if it is a regular case or the end of the test
-                    ser.close()         ## Just to activate the exception
+        elif data != b'':
+            output = str(datetime.now()) + ">    " + data.decode('utf-8')
+            logging.info(output)
 
-    except:
-        keyboardInterruptHandler(handler_check)
 
-## Define serial port
+# Define serial port
 with serial.Serial(device, baudrate, timeout=0.5) as ser:
 
     if ser.isOpen():
@@ -109,8 +62,17 @@ with serial.Serial(device, baudrate, timeout=0.5) as ser:
         ser.reset_input_buffer()
         print('Reseting input buffer')
 
-    ## Create logfile if defined
-    if logflag:
-        f = open(logfile, 'a')
+    # This defines a process which will execute the 'read' function
+    # after a predetermined ammount of time, it will terminate
+    # that way we can control for how long we'll log the execution
+    log_process = Process(target=read, name='Process_inc_forever')
+    log_process.start()
+    log_process.join(timeout=timeout)
+    log_process.terminate()
 
-    read()
+    if log_process.exitcode is None:
+        logging.info(f'process {log_process} terminated after {timeout} seconds')
+        logging.info('Closing serial port')
+        sleep(1)
+        ser.close()
+        sys.exit(0)
