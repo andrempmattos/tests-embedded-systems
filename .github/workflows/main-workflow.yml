@@ -35,4 +35,4 @@ jobs:
         run: .github/workflows/./check-devices.sh
       # Calls the uart-terminal script to start monitoring the UART port and report the success/fail criterium
       - name: Run python monitoring script
-        run: python3 .github/workflows/uart-terminal-continuous.py $PORT $BAUDRATE $TIMEOUT && disown
+        run: nohup python3 .github/workflows/uart-terminal-continuous.py $PORT $BAUDRATE $TIMEOUT
