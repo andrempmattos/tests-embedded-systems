@@ -18,6 +18,7 @@ jobs:
       PORT: /dev/ttyUSB0
       BAUDRATE: 115200
       TIMEOUT: 60
+      #LOGFILE: ../tests/output.log
 
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
