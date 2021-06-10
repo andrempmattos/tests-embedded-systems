@@ -36,3 +36,9 @@ jobs:
       # Calls the uart-terminal script to start monitoring the UART port and report the success/fail criterium
       - name: Run python monitoring script
         run: nohup python3 .github/workflows/uart-terminal-continuous.py $PORT $BAUDRATE $TIMEOUT
+      # Stores log file as a workflow Artifact. Artifacts are stored on GitHub for up to 90 days
+      - name: Store Log Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: output
+          path: ../tests/output.log
